@@ -1,13 +1,14 @@
 
-NCFCODES := $(wildcard *ncf)
+NCFCODES := $(wildcard *.ncf)
 SIMBINARIES := $(patsubst %.ncf,%_simulate,$(NCFCODES))
 SIMCODES := $(patsubst %.ncf, %_simulate.c,$(NCFCODES))
+
 all: $(SIMBINARIES)
 
 .SECONDARY: $(SIMCODES)
 
-%_simulate.c: %.ncf parse.py
-	python parse.py $< 
+%_simulate.c: %.ncf neurowriter.py
+	python neurowriter.py $< 
 %_simulate: %_simulate.c
 	gcc -pedantic -Wall -O3 -o $@ $<
 
