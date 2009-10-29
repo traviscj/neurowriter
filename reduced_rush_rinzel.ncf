@@ -1,0 +1,53 @@
+name = rush_rinzel
+var1 = V
+var2 = n
+var3 = b
+eq1 = (-I + mu/C)/c_m
+eq2 = dndt
+eq3 = dbdt
+# (-(g_l*(@V -E_L)  + g_na*pow((0.38*(@V +29.7)/(1-exp(-0.1*(@V +29.7)))/ (0.38*(@V +29.7)/(1-exp(-0.1*(@V +29.7))) + 15.2*exp(-0.0556*(@V +54.7)))),3)*(0.9 - 1.2*@n )*(@V -E_na) + g_k*pow(@n ,4)*(@V -E_k) + g_a*((0.0761*exp(0.0314*(@V +94.22))/(1+exp(0.0346*(@V + 1.17)))))*@b *(@V -E_a)) + mu/C)/c_m
+# = ((0.02*(@V +45.7)/(1-exp(-0.1*(@V +45.7))) / (0.02*(@V +45.7)/(1-exp(-0.1*(@V +45.7))) + 0.25*exp(-0.0125*(@V +55.7)))) - @n )/(1/(0.02*(@V +45.7)/(1-exp(-0.1*(@V +45.7))) + 15.2*exp(-0.0556*(@V +54.7))))
+# = (pow((1/(1+exp(0.0688*(@V +53.3)))),4) - @b )/(.124 + 2.678/(1+exp(0.0624*(@V +50)/16.027)))
+
+cmdparams = sharedInput, dt, tMax, g_a
+staticparams = C, c_m, g_l, g_na, g_k, E_L, E_na, E_k, E_a, a_m, a_n, b_m, b_n, tau_n, tau_b, m_inf, n_inf, a_inf, b_inf, dndt, dbdt, I
+stdinparams = mu, sigma
+actions = printall
+
+ic_var1 = -65
+ic_var2 = .5
+ic_var3 = .5
+static_C = 1
+static_c_m = 0.01
+static_g_l = 0.003
+static_g_na = 1.2
+static_g_k = 0.20
+static_E_L = -17
+static_E_na = 55
+static_E_k = -72
+static_E_a = -75
+
+static_a_m = 0.38*(V_start +29.7)/(1-exp(-0.1*(V_start +29.7)));
+static_a_n = 0.02*(V_start +45.7)/(1-exp(-0.1*(V_start +45.7)));
+
+static_b_m = 15.2*exp(-0.0556*(V_start+54.7));
+static_b_n = 0.25*exp(-0.0125*(V_start+55.7));
+
+static_tau_n = 1/(a_n + b_n);
+static_tau_b = .124 + 2.678/(1+exp(0.0624*(V_start+50)/16.027));
+
+static_m_inf = a_m / (a_m + b_m);
+static_n_inf = a_n / (a_n + b_n);
+static_a_inf = pow(0.0761*exp(0.0314*(V_start+94.22))/(1+exp(0.0346*(V_start+1.17))),1.0/3.0);
+static_b_inf = pow(1/(1+exp(0.0688*(V_start+53.3))),4);
+
+static_dndt = (n_inf - n_start)/tau_n;
+static_dbdt = (b_inf - b_start)/tau_b;
+
+static_I = g_l*(V_start-E_L)  + g_na*pow(m_inf,3)*(0.9 - 1.2*n_start)*(V_start-E_na) + g_k*pow(n_start,4)*(V_start-E_k) + g_a*pow(a_inf,3)*b_start*(V_start-E_a);
+
+
+spike_trigger = threshold
+spike_threshold = 0
+spike_var = @V
+

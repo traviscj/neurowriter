@@ -1,0 +1,9 @@
+neurowriter
+===========
+Python script to write stochastic neuron integrators from a shorter and 
+	easier-to-manage description file
+
+
+*************************************
+** currently a work in progress!!! **
+*************************************

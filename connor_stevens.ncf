@@ -1,0 +1,63 @@
+name = ConnorStevens
+
+var1 = V
+var2 = m
+var3 = h
+var4 = n
+var5 = a
+var6 = b
+eq1 = (-I + mu/C)/c_m
+eq2 = dmdt
+eq3 = dhdt
+eq4 = dndt
+eq5 = dadt
+eq6 = dbdt
+cmdparams = sharedInput, dt, tMax, g_a
+staticparams = g_l, g_na, g_k, E_L, E_na, E_k, E_a, C, c_m, I, a_m, a_h, a_n, b_m, b_h, b_n, tau_m, tau_h, tau_n, tau_a, tau_b, m_inf, h_inf, n_inf, a_inf, b_inf, dmdt, dhdt, dndt, dadt, dbdt
+stdinparams = mu, sigma
+actions = printall
+
+ic_var1 = -78.0
+ic_var2 = 0.5
+ic_var3 = 0.5
+ic_var4 = 0.5
+ic_var5 = 0.5
+ic_var6 = 0.5
+
+static_g_l = 0.3
+static_g_na = 120.0
+static_g_k = 20.0
+static_E_L = -17.0
+static_E_na = 55.0
+static_E_k = -72.0
+static_E_a = -75.0
+static_C = 1.0
+static_c_m = 1.0
+
+static_I = (g_l*(V_start-E_L)  + g_na*pow(m_start,3.0)*h_start*(V_start-E_na) + g_k*pow(n_start,4.0)*(V_start-E_k) + g_a*pow(a_start,3.0)*b_start*(V_start-E_a))
+
+static_a_m = 0.38*(V_start+29.7)/(1-exp(-0.1*(V_start+29.7)))
+static_a_h = 0.266*exp(-0.05*(V_start+48.0))
+static_a_n = 0.02*(V_start+45.7)/(1-exp(-0.1*(V_start+45.7)))
+
+static_b_m = 15.2*exp(-0.0556*(V_start+54.7))
+static_b_h = 3.8/(1+exp(-0.1*(V_start+18.0)))
+static_b_n = 0.25*exp(-0.0125*(V_start+55.7))
+
+static_tau_m = 1.0/(a_m + b_m)
+static_tau_h = 1.0/(a_h + b_h)
+static_tau_n = 1.0/(a_n + b_n)
+static_tau_a = 0.3632 + 1.158/(1+exp(0.0497*(V_start+55.96)))
+static_tau_b = 1.24 + 2.678/(1+exp(0.0624*(V_start+50.0)))
+
+static_m_inf = a_m / (a_m + b_m)
+static_h_inf = a_h / (a_h + b_h)
+static_n_inf = a_n / (a_n + b_n)
+static_a_inf = pow((0.0761*exp(0.0314*(V_start+94.22))/(1+exp(0.0346*(V_start+1.17)))),(1.0/3.0))
+static_b_inf = pow((1/(1+exp(0.0688*(V_start+53.3)))),4.0)
+
+static_dmdt = (m_inf - m_start)/tau_m
+static_dhdt = (h_inf - h_start)/tau_h
+static_dndt = (n_inf - n_start)/tau_n
+static_dadt = (a_inf - a_start)/tau_a
+static_dbdt = (b_inf - b_start)/tau_b

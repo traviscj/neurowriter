@@ -1,0 +1,28 @@
+name = morris_lecar
+var1 = V
+var2 = w
+eq1 = -g_ca*(0.5*(1+tanh((@V-V1)/V2)))*(@V-V_ca) - g_k*@w*(@V-V_k) - g_l*(@V-V_l)+mu
+eq2 = phi*(0.5*(1+tanh((@V-V3)/V4))-@w)/(1/cosh((@V-V3)/(2*V4)))
+
+cmdparams = V3, V4, g_ca, phi, sharedInput, dt, tMax
+staticparams = V1, V2, g_k, g_l, V_ca, V_k, V_l
+stdinparams = mu, sigma
+actions = printspiketimes
+
+spike_trigger = threshold
+spike_threshold = 0
+spike_var = @V
+
+scale_eq1 = 20
+ic_var1 = 0
+ic_var2 = 0
+static_g_ca = 4.4
+static_g_k = 8.0
+static_g_l = 2
+static_phi = 0.04
+static_V_ca = 120
+static_V_k = -84
+static_V_l = -60
+static_V1 = -1.2
+static_V2 = 18
+

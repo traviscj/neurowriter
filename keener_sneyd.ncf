@@ -1,0 +1,32 @@
+name = keener_sneyd
+var1 = v
+var2 = n
+eq1 = (-I + mu/C)
+eq2 = dndt
+
+cmdparams = sharedInput, dt, tMax
+staticparams = C, g_k, g_na, g_l, alpha_n, beta_n, alpha_m, beta_m, v_k, v_na, v_l, m_inf, dndt, I
+stdinparams = mu, sigma
+actions = printspiketimes
+
+ic_var1 = -65
+ic_var2 = .5
+static_C = 1.0
+static_g_l = 0.3
+static_g_na = 120.0
+static_g_k = 36.00
+static_v_l = -54.4
+static_v_na = 50.0
+static_v_k = -77.0
+static_alpha_m =  0.1*(@v+40.0)/(1.0-exp(-(@v+40.0)/10.0))
+static_beta_m = 4.0*exp(-(@v+65.0)/18.0)
+static_alpha_n = 0.01*(@v+55.0)/(1.0-exp(-(@v+55.0)/10.0))
+static_beta_n = 0.125*exp(-(@v+65.0)/80.0)
+static_m_inf = alpha_m/(alpha_m + beta_m)
+static_dndt = alpha_n*(1.0-@n) - beta_n*@n
+static_I = g_k*pow(@n,4.0)*(@v - v_k) + g_na * pow(m_inf,3.0) * (0.8-@n)*(@v-v_na) + g_l*(@v-v_l)
+
+spike_trigger = threshold
+spike_threshold = 0.0
+spike_var = @v
+

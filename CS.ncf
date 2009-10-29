@@ -1,0 +1,71 @@
+name = ConnorStevens
+
+var1 = V
+var2 = m
+var3 = h
+var4 = n
+var5 = a
+var6 = b
+eq1 = (-I + mu/C)/c_m
+eq2 =  dmdt
+eq3 =  dhdt
+eq4 =  dndt
+eq5 =  dadt
+eq6 =  dbdt
+
+cmdparams = sharedInput, dt, tMax
+stdinparams = mu, sigma
+staticparams = g_l, g_na, g_k, g_a, E_L, E_na, E_k, E_a, I, a_m, a_h, a_n, b_m, b_h, b_n, tau_m, tau_h, tau_n, tau_a, tau_b, m_inf, h_inf, n_inf, a_inf, b_inf, dmdt, dhdt, dndt, dadt, dbdt, C, c_m
+actions = printall
+ic_var1 = -68
+ic_var2 = .5
+ic_var3 = .5
+ic_var4 = .5
+ic_var5 = .5
+ic_var6 = .5
+
+spike_trigger = threshold
+spike_threshold = 0
+spike_var = @v
+
+
+static_g_l = 0.003 
+static_g_na = 1.2 
+static_g_k = 0.2 
+static_g_a = 0.477
+static_E_L = -17   
+static_E_na = 55  
+static_E_k = -72 
+static_E_a = -75
+
+static_I = g_l*(@V-E_L)  + g_na*pow(@m,3)*@h*(@V-E_na) + g_k*pow(@n,4)*(@V-E_k) + g_a*pow(@a,3)*@b*(@V-E_a)
+
+static_a_m = 0.38*(@V+29.7)/(1-exp(-0.1*(@V+29.7)))
+static_a_h = 0.266*exp(-0.05*(@V+48))
+static_a_n = 0.02*(@V+45.7)/(1-exp(-0.1*(@V+45.7)))
+
+static_b_m = 15.2*exp(-0.0556*(@V+54.7))
+static_b_h = 3.8/(1+exp(-0.1*(@V+18)))
+static_b_n = 0.25*exp(-0.0125*(@V+55.7))
+
+static_tau_m = 1/(a_m + b_m)
+static_tau_h = 1/(a_h + b_h)
+static_tau_n = 1/(a_n + b_n)
+static_tau_a = 0.3632 + 1.158/(1+exp(0.0497*(@V+55.96)))
+static_tau_b = 1.24 + 2.678/(1+exp(0.0624*(@V+50)))
+
+static_m_inf = a_m / (a_m + b_m)
+static_h_inf = a_h / (a_h + b_h)
+static_n_inf = a_n / (a_n + b_n)
+static_a_inf = pow((0.0761*exp(0.0314*(@V+94.22))/(1+exp(0.0346*(@V+1.17)))),(1/3))
+static_b_inf = pow((1/(1+exp(0.0688*(@V+53.3)))),4)
+
+static_dmdt = (m_inf - @m)/tau_m
+static_dhdt = (h_inf - @h)/tau_h
+static_dndt = (n_inf - @n)/tau_n
+static_dadt = (a_inf - @a)/tau_a
+static_dbdt = (b_inf - @b)/tau_b
+
+static_C = 1
+static_c_m = 0.01
+

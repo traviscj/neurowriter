@@ -1,0 +1,23 @@
+name = FHN
+var1 = v
+var2 = w
+eq1 = @v - pow(@v,3)/3 - @w + mu
+eq2 = 0.08*(@v - a - b*@w ) 
+cmdparams = sharedInput, dt, tMax
+staticparams = a, b 
+stdinparams = mu, sigma
+actions = printspiketimes, reset
+
+ic_var1 = -2.5
+ic_var2 = 0.25
+static_a = -0.7
+static_b = 0.8
+spike_trigger = threshold
+spike_threshold = 0
+spike_var = @v
+reset_threshold = 1.5
+reset_variable = @v
+reset_var1_val = -2
+reset_var1_style = set
+reset_var2_val = 1
+reset_var2_style = set

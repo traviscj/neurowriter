@@ -1,0 +1,26 @@
+name = izhi
+var1 = v
+var2 = u
+eq1 = (k*(@v-vr)*(@v-vt)-@u+mu)
+eq2 = a*(b*(@v-vr)-@u)
+cmdparams = a, b, C, sharedInput, dt, tMax
+staticparams = k,vr,vt
+stdinparams = mu, sigma
+actions = printall,reset
+
+
+scale_eq1 = C
+static_k = 0.7
+static_vr = -60
+static_vt = -40
+ic_var1 = -65
+ic_var2 = 0
+reset_threshold = 35
+reset_variable = @v
+reset_var1_val = -65
+reset_var1_style = set
+reset_var2_val = 100
+reset_var2_style = add
+spike_trigger = threshold
+spike_threshold = 35
+spike_var = @v
