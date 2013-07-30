@@ -31,7 +31,7 @@ class NeuroIntegrator():
 		stdinparams= ", ".join(["double %s"%s for s in self.settings['stdinparams'].split(',')])
 
 		self.output.write("void %s_1step(%s, \n\t\tdouble shared, unsigned long *i_seed, %s, %s) {\n"%(self.name,state,sysparams,stdinparams))
-		self.output.write("\t//init state\n")
+		self.output.write("\t/* init state */\n")
 		self.output.write("\tdouble %s;\n" % ", ".join([s.upper() for s in self.sym.values()]))
 
                 for var in self.settings['staticparams'].split(','):
@@ -43,9 +43,9 @@ class NeuroIntegrator():
                         self.output.write("\tdouble %s = %s;\n" % (var.strip(),eq))
 		#for (k,v) in self.sym.items():
 		#	print "\tdouble %s;"%(v.upper())
-		self.output.write("\t//init rand\n")
+		self.output.write("\t/* init rand */\n")
 		self.output.write("\tdouble unique_stoch = gasdev();\n")
-		self.output.write("\t//printf(\"%f %f\\n\", shared, unique_stoch);\n")
+        # self.output.write("\t//printf(\"%f %f\\n\", shared, unique_stoch);\n")
 		#print "\tlong i_seed = (unsigned int)time(NULL);"
 		#print "\tdouble RANDN = 0.00;"
 		for (k,v) in self.eqs.items():
@@ -58,7 +58,7 @@ class NeuroIntegrator():
 				VAR_start = "%s_start"%VAR
 				v = v.replace("@%s"%VAR,VAR_start)
 			str =  "\t%s = %s + (dt*(%s)"%(var_tmp, var_start,v)
-			self.output.write("//output: k = [%s]\n"%k)
+			self.output.write("/* output: k = [%s] */\n"%k)
 			if int(k)==1:
 				str+=" + sqrt(dt)*sigma*(sqrt(sharedInput)*shared + sqrt(1-sharedInput)*unique_stoch)"
 			if self.settings['scale_eq%s'%(k)] is not "":
@@ -79,8 +79,8 @@ int main(int argc, char** argv){\n""")
         #double a=-0.7; double b=0.8;"""
 		self.output.write("\n".join(["\tdouble %s_start[2], %s_new[2];"%(s,s) for (i,s) in self.sym.items()]))
 		self.output.write("""\n\n
-        //double dt=0.01,tMax = 500;\n
-        //double mu=.47; double sigma=0.10;double sharedInput = 0.50;\n
+        /* double dt=0.01,tMax = 500; */\n
+        /* double mu=.47; double sigma=0.10;double sharedInput = 0.50; */\n
         int i,j;\n
 	double shared;\n""")
 	
@@ -123,7 +123,7 @@ int main(int argc, char** argv){\n""")
 		self.output.write("\tfor (i=0; i*dt <= tMax; i++) {\n")
                 self.output.write("\t\tfor (j=0; j<2; j++) {\n")
 		self.output.write("\t\t\t /* Optional Spike Detection*/\n")
-		self.output.write("//settings = %s\n" % self.settings)
+		self.output.write("/* settings = %s */\n" % self.settings)
 
 		if 'printall' in self.settings['actions']:
 			#for (k,v) in self.sym.items():
@@ -142,15 +142,15 @@ int main(int argc, char** argv){\n""")
 
 
 		if 'reset' in self.settings['actions']:
-			self.output.write("// do reset logic here!\n")
-			self.output.write("// self.sym = %s\n" % (self.sym))
+			self.output.write("/* do reset logic here! */\n")
+			self.output.write("/* self.sym = %s */\n" % (self.sym))
 			self.output.write("\t\tif (%s_new[j] > %s) {\n" % (self.settings['reset_variable'][1:], self.settings['reset_threshold']))
 			for (k,v) in self.sym.items():
 						# logic for 1 v: set v -65
 						# logic for 2 u: add u 100
 				style = self.settings['reset_var%s_style'%k]
 				val = self.settings['reset_var%s_val'%k]
-				self.output.write("\t\t\t // logic for %s %s: %s %s %s\n" % (k,v,style, v,val))
+				self.output.write("\t\t\t /* logic for %s %s: %s %s %s */\n" % (k,v,style, v,val))
 				if style == "add":
 					self.output.write("\t\t\t%s_new[j] = %s_new[j] + %s;\n"%(v,v,val))
 				elif style == "set":
